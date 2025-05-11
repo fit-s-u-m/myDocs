@@ -1,1 +1,1 @@
-export type lightType = "ambient" | "spot" | "point"
+export type lightType = "ambient" | "spot" | "point" | "directional"
