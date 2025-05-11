@@ -33,6 +33,8 @@ function main() {
 	let floor: Object3D | null = null
 	let laddar: Object3D | null = null
 	let pot: Object3D | null = null
+	// let doorClose: AnimationClip | null = null
+	// let doorOpen: AnimationClip | null = null
 	/*
 	function setColor(object: Object3D, color: Color | string | number) {
 		object.traverse((child) => {
@@ -57,22 +59,29 @@ function main() {
 					switch (name) {
 						case "middle":
 							camera.position.set(0, 3, 10)
+							// if (animationActions.middle.doorClose)
+							// 	animationActions.middle.doorClose.play()
 							// camera.lookAt(0, 3, 0)
 							break;
 						case 'left':
 							const leftHouseVec = new Vector3(-15, 3, 10)
 							const dir = leftHouseVec.clone().normalize();
 							const camPos = dir.multiplyScalar(5);
-							camera.position.copy(leftHouseVec)
-							// camera.lookAt(leftHouseVec);
+							// if (animationActions.left.doorClose)
+							// 	animationActions.left.doorClose.play()
+							camera.position.copy(camPos)
+							camera.lookAt(leftHouseVec);
 							break
 						case 'right':
 							{
 								const rightHouseVec = new Vector3(15, 3, 10)
 								const dir = rightHouseVec.clone().normalize();
 								const camPos = dir.multiplyScalar(5);
+								// if (animationActions.right.doorClose)
+								// 	animationActions.right.doorClose.play()
+								// camera.position.copy(camPos)
 								camera.position.copy(camPos)
-								// camera.lookAt(rightHouseVec);
+								camera.lookAt(rightHouseVec);
 							}
 							break
 					}
@@ -81,8 +90,28 @@ function main() {
 		});
 	}
 
+	// type DoorAnimation = { doorClose: AnimationAction | null, doorOpen: AnimationAction | null }
+	// const animationActions: { middle: DoorAnimation, left: DoorAnimation, right: DoorAnimation } = { middle: { doorClose: null, doorOpen: null }, left: { doorClose: null, doorOpen: null }, right: { doorClose: null, doorOpen: null } };
+	// const mixers: AnimationMixer[] = []
+
 	const loader = new GLTFLoader(manager.get())
 	loader.load("/hut.glb", (gltf) => {
+		// let doorOpen: AnimationClip
+		// let doorClose: AnimationClip
+		if (gltf.animations && gltf.animations.length > 0) {
+			console.log("Animations found:", gltf.animations);
+			gltf.animations.forEach(animation => {
+				console.log(animation)
+				// if (animation.name == "doorOpen") {
+				// 	doorOpen = animation
+				// }
+				// if (animation.name == "doorClose") {
+				// 	doorClose = animation
+				// }
+			})
+			// You'd typically create an AnimationMixer here
+			// const mixer = new THREE.AnimationMixer(gltf.scene);
+		}
 		const model = gltf.scene
 		let houseCollection = new Group()
 		let potCollection = new Group()
@@ -119,6 +148,22 @@ function main() {
 		}
 		if (house) {
 			makeHouseInteractive(house)
+			// const originalMixer = new AnimationMixer(house);
+			// const openAction = originalMixer.clipAction(doorOpen);
+			// if (doorClose) {
+			// 	console.log("door close")
+			// 	const closeAction = originalMixer.clipAction(doorClose, house);
+			// 	closeAction.play()
+			// }
+			// Optional: attach mixer if this object is animated
+			// if (doorOpen && doorClose) {
+			// 	const mixer = new AnimationMixer(house);
+			// 	const houseOpen = mixer.clipAction(doorOpen);
+			// 	const houseClose = mixer.clipAction(doorClose);
+			// 	mixers.push(mixer);
+			// 	animationActions.middle.doorClose = houseClose
+			// 	animationActions.middle.doorOpen = houseOpen
+			// }
 			house.receiveShadow = true
 			house.castShadow = true
 			scene.add(house);
@@ -129,6 +174,14 @@ function main() {
 			leftHouse.castShadow = true
 			leftHouse.rotateY(45)
 			leftHouse.position.set(-15, 0, 5)
+			// if (doorOpen && doorClose) {
+			// 	const mixer = new AnimationMixer(leftHouse);
+			// 	mixers.push(mixer);
+			// 	const leftHouseOpen = mixer.clipAction(doorOpen);
+			// 	const leftHouseClose = mixer.clipAction(doorClose);
+			// 	animationActions.left.doorClose = leftHouseClose
+			// 	animationActions.left.doorOpen = leftHouseOpen
+			// }
 			scene.add(leftHouse);
 
 			// right house
@@ -138,6 +191,14 @@ function main() {
 			rightHouse.castShadow = true
 			rightHouse.position.set(15, 0, 5)
 			rightHouse.rotateY(-45)
+			// if (doorOpen && doorClose) {
+			// 	const mixer = new AnimationMixer(rightHouse);
+			// 	mixers.push(mixer);
+			// 	const rightHouseOpen = mixer.clipAction(doorOpen);
+			// 	const rightHouseClose = mixer.clipAction(doorClose);
+			// 	animationActions.right.doorClose = rightHouseClose
+			// 	animationActions.right.doorOpen = rightHouseOpen
+			// }
 			scene.add(rightHouse);
 		}
 		if (laddar) {
@@ -194,10 +255,13 @@ function main() {
 	renderer.shadowMap.enabled = true;
 
 
+	// const clock = new Clock();
 	function animation() {
-		controls.update()
+		// controls.update()
 		requestAnimationFrame(animation)
 		clickManager.update()
+		// const delta = clock.getDelta();
+		// mixers.forEach(mixer => mixer.update(delta));
 		renderer.render(scene, camera)
 	}
 	animation()
