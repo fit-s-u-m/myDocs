@@ -15,7 +15,7 @@ function main() {
 
 	const scene = MyScene.getScene()
 	const camera = new Camera(0.1, 1000)
-	camera.position.set(0, 5, 20); // Position to view the model better
+	camera.position.set(0, 2, 10); // Position to view the model better
 
 
 	const manager = new LoadManager()
