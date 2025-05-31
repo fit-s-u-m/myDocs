@@ -1,5 +1,6 @@
-body {
+body,html {
 	margin: 0;
+	height:100vh;
 	overflow: hidden;
 }
 
@@ -47,4 +48,17 @@ body {
 	width: 0px;
 	background-color: white;
 	border-radius: 10px;
+}
+#blog, #algorithms, #path-finding, #digital-health, #nice-result, #gat-result, #hackathon-prize,{
+	display: none;
+}
+
+.front-display{
+	z-index:10;
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	background-color:#000;
 }

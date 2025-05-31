@@ -8,6 +8,7 @@ export class Camera extends PerspectiveCamera {
 		super(fov, cavasSize.x / cavasSize.y, near, far)
 
 		sizeData.subscribe(this.updateWithSize.bind(this))
+		this.position.set(0, 1, 10)
 	}
 	move() {
 

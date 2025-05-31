@@ -7,6 +7,7 @@ export class Renderer extends WebGLRenderer {
 		const { canvasSize } = sizeData.getState()
 		this.setSize(canvasSize.x, canvasSize.y)
 		sizeData.subscribe(this.updateWithSize.bind(this))
+		this.shadowMap.enabled = true
 	}
 	updateWithSize(sizeData: sizeType) {
 		const { canvasSize } = sizeData

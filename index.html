@@ -15,7 +15,42 @@
         <div id="loading-bar"></div>
       </div>
     </div>
+    <div id="result">
+      <button class="x-button" onClick="closeById(result)">X</button>
+      <img src="./public/pics/learningMs.png" alt="GatResult" id="gat-result">
+      <img src="./public/pics/niceGrade.png" alt="Nice grade" id="nice-result">
+    </div>
+    <div id="hackathon-prize">
+      <button class="x-button" onClick="closeById(hackathon-prize)">X</button>
+      <img src="./public/pics/hackathonPrize.jpg" alt="Hackaton prize" id="hackathon-prize-1">
+      <img src="./public/pics/hackathonWithMinstors.jpg" alt="receiving prize from minstor of science and technology of ethiopia" id="hackathon-prize-2">
+      <img src="./public/pics/meeting presidant.jpg" alt="Meeting the presedant of ethiopia in the hackathon journey" id="hackathon-prize-3">
+    </div>
+    <div id="digitalHealth">
+      <button class="x-button" onClick="closeById(digitalHealth)">X</button>
+      <img src="./public/pics/digital-health-hackathon.jpg" alt="Winning digital health hackathon" id="digital-health-1">
+      <img src="./public/pics/digital-health-hackathon-prize.jpg" alt="Winning digital health hackathon showing the prize" id="digital-health-2">
+    </div>
+    <div id="pathFinding">
+      <button class="x-button" onClick="closeById(pathFinding)">X</button>
+      <iframe src="https://fit-s-u-m.github.io/pathfinding/" width="100%" height="100%" ></iframe>
+    </div>
+    <div id="algorithms">
+      <button class="x-button" onClick="closeById(algorithms)">X</button>
+      <iframe src="https://fit-s-u-m.github.io/Algorithms-visualized/?algorithm=Bubble+Sort" width="100%" height="100%" ></iframe>
+    </div>
+    <div  id="blog">
+      <button class="x-button" onClick="closeById(blog)">X</button>
+      <iframe src="https://fit-s-u-m.github.io/" width="100%" height="100%"></iframe>
+    </div>
+
 
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      function closeById(elm) {
+        console.log(elm)
+        elm.classList.remove("front-display")
+      }
+    </script>
   </body>
 </html>
