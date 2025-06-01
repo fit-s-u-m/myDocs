@@ -15,42 +15,105 @@
         <div id="loading-bar"></div>
       </div>
     </div>
-    <div id="result">
+    <dialog id="result">
       <button class="x-button" onClick="closeById(result)">X</button>
-      <img src="./public/pics/learningMs.png" alt="GatResult" id="gat-result">
-      <img src="./public/pics/niceGrade.png" alt="Nice grade" id="nice-result">
-    </div>
-    <div id="hackathon-prize">
+      <figure >
+        <img src="./public/pics/gatResult.png" alt="GatResult" id="gat-result">
+        <figcaption>Gat result</figcaption>
+      </figure>
+      <!-- <figure> -->
+      <!--    <img src="./public/pics/niceGrade.png" alt="Nice grade" id="nice-result"> -->
+      <!--   <figcaption>University Grade</figcaption> -->
+      <!-- </figure> -->
+    </dialog>
+    <dialog id="hackathonPrize" >
       <button class="x-button" onClick="closeById(hackathon-prize)">X</button>
-      <img src="./public/pics/hackathonPrize.jpg" alt="Hackaton prize" id="hackathon-prize-1">
-      <img src="./public/pics/hackathonWithMinstors.jpg" alt="receiving prize from minstor of science and technology of ethiopia" id="hackathon-prize-2">
-      <img src="./public/pics/meeting presidant.jpg" alt="Meeting the presedant of ethiopia in the hackathon journey" id="hackathon-prize-3">
-    </div>
-    <div id="digitalHealth">
+      <div class="carousel">
+        <figure >
+          <img src="./public/pics/hackathonPrize.jpg" alt="Hackaton prize" id="hackathonPrize-1">
+          <figcaption>University Grade</figcaption>
+        </figure>
+        <figure>
+          <img src="./public/pics/hackathonWithMinstors.jpg" alt="receiving prize from minstor of science and technology of ethiopia" id="hackathonPrize-2">
+          <figcaption>Accepting prize from science and techonology ministor and culture and turisum ministor at that time</figcaption>
+        </figure>
+        <figure>
+          <img src="./public/pics/meetingPrimeMinstor.png" alt="Meeting the presedant of ethiopia in the hackathon journey" id="hackathonPrize-3">
+          <figcaption>Meeting the prime mistor of ethiopia while I'm at the hackathon</figcaption>
+        </figure>
+        <button class="next-button">  &gt; </button> 
+        <button class="prev-button"> &lt;</button>
+      </div>
+    </dialog>
+    <dialog id="digitalHealth" >
       <button class="x-button" onClick="closeById(digitalHealth)">X</button>
-      <img src="./public/pics/digital-health-hackathon.jpg" alt="Winning digital health hackathon" id="digital-health-1">
-      <img src="./public/pics/digital-health-hackathon-prize.jpg" alt="Winning digital health hackathon showing the prize" id="digital-health-2">
-    </div>
-    <div id="pathFinding">
+      <div class="carousel">
+        <figure class="active" >
+          <img src="./public/pics/digitalHealth.jpg" alt="Winning digital health hackathon" id="digital-health-1">
+          <figcaption>Won a hackathon at digital health expo</figcaption>
+        </figure>
+        <figure>
+          <img src="./public/pics/digitalHealth2.jpg" alt="Winning digital health hackathon showing the prize" id="digital-health-2">
+          <figcaption>Won a hackathon at digital health expo</figcaption>
+        </figure>
+        <button class="next-button">  &gt; </button> 
+        <button class="prev-button"> &lt;</button>
+      </div>
+    </dialog>
+    <dialog id="pathFinding">
       <button class="x-button" onClick="closeById(pathFinding)">X</button>
       <iframe src="https://fit-s-u-m.github.io/pathfinding/" width="100%" height="100%" ></iframe>
-    </div>
-    <div id="algorithms">
+    </dialog>
+    <dialog id="algorithms">
       <button class="x-button" onClick="closeById(algorithms)">X</button>
       <iframe src="https://fit-s-u-m.github.io/Algorithms-visualized/?algorithm=Bubble+Sort" width="100%" height="100%" ></iframe>
-    </div>
-    <div  id="blog">
+    </dialog>
+    <dialog  id="blog">
       <button class="x-button" onClick="closeById(blog)">X</button>
       <iframe src="https://fit-s-u-m.github.io/" width="100%" height="100%"></iframe>
-    </div>
+    </dialog>
 
 
     <script type="module" src="/src/main.ts"></script>
     <script>
       function closeById(elm) {
         console.log(elm)
-        elm.classList.remove("front-display")
+        elm.close()
       }
+      const carousels = document.querySelectorAll(".carousel")
+
+      carousels.forEach((carousel) => {
+        const figures = carousel.querySelectorAll("figure")
+        let currentIndex = 0
+
+        const update = () => {
+          figures.forEach((fig, i) => {
+            console.log("update",i)
+            fig.classList.remove("active", "prev", "next")
+            if (i === currentIndex) fig.classList.add("active")
+            else if (i === (currentIndex + 1) % figures.length) fig.classList.add("next")
+            else if (i === (currentIndex - 1 + figures.length) % figures.length) fig.classList.add("prev")
+          })
+        }
+
+        update()
+        const next = carousel.querySelector(".next-button")
+        const prev = carousel.querySelector(".prev-button")
+        console.log("next",next,"prev",prev)
+
+        next?.addEventListener("click", () => {
+          currentIndex = (currentIndex + 1) % figures.length
+          console.log(currentIndex)
+          update()
+        })
+
+        prev?.addEventListener("click", () => {
+          currentIndex = (currentIndex - 1 + figures.length) % figures.length
+          console.log(currentIndex)
+          update()
+        })
+      })
+
     </script>
   </body>
 </html>

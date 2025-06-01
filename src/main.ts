@@ -5,37 +5,40 @@ import { Renderer } from './renderer';
 import { letThereBeLight } from './utils/light';
 import { sizeData } from './utils/store';
 import { InteractionManager } from 'three.interactive';
-import { Clock, Plane, Raycaster, Vector2, Vector3 } from 'three';
+import { Clock, Vector3 } from 'three';
 import { AssetLoader } from './utils/assetLoader';
 import { Doc } from './utils/docInMesh';
 import { addInteraction, Interaction } from './utils/interaction';
 import { MyMixers } from './utils/mixer';
 import { closeDoor, lookAround, openDoor } from './animation';
+import gsap from 'gsap';
+import { Flip } from 'gsap/all';
 
 
 
 async function main() {
 	const app = document.getElementById("app") as HTMLCanvasElement
 	if (!app) return
+	gsap.registerPlugin(Flip)
 
 	const renderer = new Renderer(app)
 	const scene = MyScene.getScene()
 	const camera = new Camera(0.1, 1000)
+	camera.position.set(0, 1.5, 10); // Position to view the model better
 
 	const assetLoader = new AssetLoader()
 	await assetLoader.loadAssets()
+
 	// addManager
 	addInteraction()
+	const interaction = new InteractionManager(renderer, camera, renderer.domElement)
+	Interaction.addManager(interaction)
+
 	const isWithInRadius = (maxRadius: number) => {
 		const radiusSq = camera.position.x ** 2 + camera.position.z ** 2
 		return radiusSq < maxRadius
 	}
-
-	camera.position.set(0, 1.5, 10); // Position to view the model better
-
-
-	const interaction = new InteractionManager(renderer, camera, renderer.domElement)
-	Interaction.addManager(interaction)
+	// initalize the doc hanging in the hut
 	new Doc().createDocs()
 
 	// light inside the middle house
@@ -54,15 +57,20 @@ async function main() {
 
 	const controls = new OrbitControls(camera, app)
 
-	// stop 
+	// stop no phi movement
 	controls.minPolarAngle = Math.PI / 2;  // limit vertical rotation (up)90
 	controls.maxPolarAngle = Math.PI / 2;  // limit vertical rotation (up)
 
 	controls.target = new Vector3(0, 1.5, 0)
 
+	// enable shadows
 	renderer.render(scene, camera)
 	renderer.shadowMap.enabled = true;
+
+	// mixer for animation
 	const mixers = MyMixers.getInstance().getMixers()
+
+	// open door when close
 	controls.addEventListener("end", () => {
 		const maxradiusSq = 40
 		if (isWithInRadius(maxradiusSq))
@@ -70,6 +78,7 @@ async function main() {
 		else
 			closeDoor()
 	})
+
 	const clock = new Clock();
 	function animation() {
 		requestAnimationFrame(animation)
@@ -87,12 +96,6 @@ async function main() {
 		camera.getWorldDirection(direction);
 		direction.y = 0; // stay level (no vertical movement)
 		direction.normalize();
-		// const directionToCamera = new Vector3().subVectors(camera.position, new Vector3(0, 1.5, 0)).normalize();
-		// const angle = Math.atan2(directionToCamera.z, directionToCamera.x);
-
-		// if in only way out is throgh the door
-		// if (isWithInRadius(25)){
-		// const angle = Math.atan2(direction.z, direction.x)
 		console.log(camera.rotation.y, Math.PI / 2)
 		const doorAngleMin = Math.PI / 2 - 0.1;
 		const doorAngleMax = Math.PI / 2 + 0.1;
@@ -128,27 +131,6 @@ async function main() {
 			closeDoor()
 		console.log(key)
 	})
-
-	function onMouseMove(event: MouseEvent) {
-		const mouse = new Vector2()
-		const raycaster = new Raycaster()
-		mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-		// console.log(mouse)
-		raycaster.setFromCamera(mouse, camera)
-		// const normal = new Vector3(0, 1, 0)
-		// const plane = { normal, constant: 2 }
-		// const lookAtTarget = new Vector3()
-		// const intersected = raycaster.ray.intersectPlane(plane as Plane, lookAtTarget)
-		// console.log(intersected)
-		// if (intersected)
-		// 	camera.lookAt(lookAtTarget)
-		const intersects = raycaster.intersectObjects(scene.children);
-		if (intersects.length > 0) {
-			camera.lookAt(intersects[0].point);
-		}
-
-	}
 	// window.addEventListener("mousemove", onMouseMove)
 	window.addEventListener("resize", () => {
 		sizeData.setState({

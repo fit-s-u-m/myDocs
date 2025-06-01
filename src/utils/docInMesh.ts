@@ -4,6 +4,7 @@ import { letThereBeLight } from "./light";
 import { MyScene } from "../scene";
 import { Interaction } from "./interaction";
 import { bringDocsUp } from "../animation";
+import { randomValueInRange } from "./random";
 export class Doc {
 	constructor() {
 		// assetsLoaded.subscribe(this.createDocs.bind(this))
@@ -14,11 +15,11 @@ export class Doc {
 		assetData.getState()
 			.loadedAssets
 			.filter(asset => asset.isDoc)
-			.forEach((docs, index) => {
-				console.log(docs)
+			.forEach((docs, index, arr) => {
+				console.log(docs, arr.length)
 
 				const radius = 4 - .3
-				const angle = index * Math.PI / 6
+				const angle = - index * Math.PI / arr.length
 
 				// avoid the door
 				const gap = Math.PI / 6
@@ -32,25 +33,15 @@ export class Doc {
 				Interaction.getInstance().makeObjectInteractive(cube)
 				cube.addEventListener("click", () => {
 					console.log(docs.name)
-					bringDocsUp("digitalHealth")
-					// cube.scale.set(2, 2, 2)
-					// cube
-					// if(docs.name == "HackathonPrize"){
-					//
-					// }
+					bringDocsUp(docs.name)
 				})
 
 				cube.rotation.y = -angle
-				// TODO: Thing about the performance
-				// cube.castShadow = true
-				// cube.receiveShadow = true
-
-
 				// rect light
 				const light = letThereBeLight("rectArea") as RectAreaLight
 				light.color.set(0xffffff)
-				light.intensity = 5
-				light.width = 0.8
+				light.intensity = 2
+				light.width = 1
 				light.height = 1
 				light.rotateY(angle)
 				const xl = (radius - 1) * Math.cos(angle)
@@ -60,18 +51,20 @@ export class Doc {
 
 				const x = radius * Math.cos(angle)
 				const z = radius * Math.sin(angle)
-				light.lookAt(x, 1.5, z)
-				cube.position.set(x, 1.5, z)
+				const median = Math.floor(arr.length / 2)
+				// const distance = Math.abs(median - index);
+				// const y = (1 - (1 / 2) * Math.pow(distance / median, 2)) * 1.8;
+				const y = randomValueInRange(1.4, 1.7)
+				light.lookAt(x, y, z)
+				cube.position.set(x, y, z)
 
 				MyScene.getScene().add(cube, light)
 				docData.getState().addDoc({ name: docs.name, texture: docs.obj as Texture, mesh: cube })
+				const roughness = assetData.getState().loadedAssets.find(asset => asset.name == "treeRoughness")?.obj as Texture
+
+				const normalMap = assetData.getState().loadedAssets.find(asset => asset.name == "treeNormal")?.obj as Texture
+				material.roughnessMap = roughness
+				material.normalMap = normalMap
 			})
 	}
 }
-// const texture = assetData.getState().loadedAssets.find(asset => asset.name == "niceGrade")?.obj as THREE.Texture
-// const roughness = assetData.getState().loadedAssets.find(asset => asset.name == "treeRoughness")?.obj as THREE.Texture
-//
-// const normalMap = assetData.getState().loadedAssets.find(asset => asset.name == "treeNormal")?.obj as THREE.Texture
-// material.map = texture
-// material.roughnessMap = roughness
-// material.normalMap = normalMap

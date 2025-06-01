@@ -109,10 +109,11 @@ export function lookAround(camera: Camera, controler: OrbitControls) {
 
 
 export const bringDocsUp = (docName: string) => {
-	const doc = document.getElementById(docName)
+	const doc = document.getElementById(docName) as HTMLDialogElement
 	const app = document.getElementById("app")
 	if (!doc || !app) return
-	doc.style.display = "block"
+	doc.showModal()
+	// doc.style.display = "flex"
 	// app.style.display = "none"
-	doc.classList.toggle("front-display")
+	// doc.classList.toggle("front-display")
 }

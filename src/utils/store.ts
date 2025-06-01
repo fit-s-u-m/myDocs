@@ -24,11 +24,12 @@ const assets2Load = [
 	{ path: "/background.hdr", name: "background", type: "hdr" },
 
 	// docs 
-	{ path: "/pics/hackathonPrize.jpg", name: "HackathonPrize", type: "jpg", isDoc: true },
-	{ path: "/pics/hackathonWithMinstors.jpg", name: "HackathonPhoto", type: "jpg", isDoc: true },
-	{ path: "/pics/learningMs.png", name: "GatResult", type: "png", isDoc: true },
-	{ path: "/pics/meetingPrimeMinstor.png", name: "MeetingAbiy", type: "png", isDoc: true },
-	{ path: "/pics/niceGrade.png", name: "niceGrade", type: "png", isDoc: true },
+	{ path: "/pics/meetingPrimeMinstor.png", name: "hackathonPrize", type: "png", isDoc: true },
+	{ path: "/pics/gatResult.png", name: "result", type: "png", isDoc: true },
+	{ path: "/pics/digitalHealth.jpg", name: "digitalHealth", type: "jpg", isDoc: true },
+	{ path: "/pics/digitalHealth.jpg", name: "digitalHealth1", type: "jpg", isDoc: true },
+	{ path: "/pics/digitalHealth.jpg", name: "digitalHealth2", type: "jpg", isDoc: true },
+	{ path: "/pics/digitalHealth.jpg", name: "digitalHealth3", type: "jpg", isDoc: true },
 
 	// tree look
 	{ path: "/pics/tree/albedo.png", name: "treeAlbedo", type: "png" },
